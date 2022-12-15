@@ -1,16 +1,4 @@
-let addNodeButton = document.getElementById('addNodeButton');
-let addEdgeButton = document.getElementById('addEdgeButton');
-let addNode = (event) => {
-  console.log(`addNodeButton click`);
-  console.log(event);
-}
-let addEdge = (event) => {
-  console.log(`addEdgeButton click`);
-  console.log(event);
-}
-addNodeButton.addEventListener('click', addNode);
-addEdgeButton.addEventListener('click', addEdge);
-var cy = cytoscape({
+let cy = cytoscape({
   container: document.getElementById('cy'),
   elements: [
     { data: { id: 'a' } },
@@ -19,3 +7,23 @@ var cy = cytoscape({
     }]
 });
 window.cy = cy;
+let nodes={}; // key is nodeID and value is list of destination nodeIDs
+let currentNodeId='b';
+let nextNodeId = () => {
+  currentNodeId = String.fromCharCode(currentNodeId[0].charCodeAt()+1);
+  return currentNodeId;
+}
+let addNodeButton = document.getElementById('addNodeButton');
+let addEdgeButton = document.getElementById('addEdgeButton');
+let addNode = (event) => {
+  console.log(`addNodeButton click`);
+  let nId = nextNodeId();
+  console.log(`Next node ID: ${nId}`);
+  cy.add( { data: { id: nId }, position: {  x: 100, y: 100 } });
+}
+let addEdge = (event) => {
+  console.log(`addEdgeButton click`);
+  console.log(event);
+}
+addNodeButton.addEventListener('click', addNode);
+addEdgeButton.addEventListener('click', addEdge);
