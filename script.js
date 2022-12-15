@@ -16,10 +16,11 @@ let nextNodeId = () => {
 let addNodeButton = document.getElementById('addNodeButton');
 let addEdgeButton = document.getElementById('addEdgeButton');
 let addNode = (event) => {
-  console.log(`addNodeButton click`);
   let nId = nextNodeId();
-  console.log(`Next node ID: ${nId}`);
-  cy.add( { data: { id: nId }, position: {  x: 100, y: 100 } });
+  let n = cy.add( { data: { id: nId }, position: {  x: 100, y: 100 } });
+  n.on('tapdragover', (event) => { console.log(`tapdragover ${nId}`);
+                                  console.log(event);
+                                 });
 }
 let addEdge = (event) => {
   console.log(`addEdgeButton click`);
