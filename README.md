@@ -1,4 +1,6 @@
-# Playing with js.cytoscape.org
+# Playing with js.cytoscape.org & Yjs.dev
+
+## Slides are at https://bit.ly/YjsDemo1
 
 Start with a  copy and paste of https://blog.js.cytoscape.org/2016/05/24/getting-started/
 
