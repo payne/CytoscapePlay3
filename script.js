@@ -1,3 +1,4 @@
+
 let cy = cytoscape({
   container: document.getElementById('cy'),
   elements: [
@@ -13,15 +14,12 @@ window.cy = cy; // so it's easy to play in devtools console
 cy.on('dragfree' , nodeMovedNew);
 let nodes = {}; // key is nodeID and value is metadata and list of destination nodeIDs
 let currentNodeId = 'b';
-let nextNodeId = () => {
+function nextNodeId() {
   currentNodeId = String.fromCharCode(currentNodeId[0].charCodeAt() + 1);
   return currentNodeId;
 }
 let addNodeButton = document.getElementById('addNodeButton');
 let addEdgeButton = document.getElementById('addEdgeButton');
-let nodeMoved = (event) => {
-  console.log(event);
-}
 function nodeMovedNew(event) {
   const id = event.target.id();
   const node = cy.getElementById(id);
@@ -36,7 +34,8 @@ function nodeMovedNew(event) {
   }
   console.log(nodes);
 }
-let addNode = (event) => {
+
+function addNode(event) {
   let nId = nextNodeId();
   let n = cy.add({ data: { id: nId }, position: { x: 100, y: 100 } });
   console.log(`addNodeButton click`);
