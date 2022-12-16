@@ -6,6 +6,8 @@ const ydoc = new Y.Doc()
 const provider = new WebrtcProvider('lot a nodes', ydoc, { password: 'test' })
 // An array might not be the best, but it's a place to start.
 const ynodes = ydoc.getArray('ynodes');
+const colors=['red','green','blue','yellow','orange'];
+const oneOf = arr => arr[Math.floor(Math.random() * arr.length)]
 
 ynodes.observe(event => {
   event.changes.added.forEach(item => {
@@ -15,6 +17,7 @@ ynodes.observe(event => {
       const node = cy.getElementById(ay_node.id);
       nodes[ay_node.id].position = ay_node.position;
       node.position(ay_node.position);
+      node.style('background-color', oneOf(colors));
       console.log(`Just set possition of ${ay_node.id} to:`, ay_node.position);
     })
   })
