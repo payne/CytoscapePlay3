@@ -2,6 +2,20 @@
 import * as Y from 'https://esm.sh/yjs@13'
 import { WebrtcProvider } from 'https://esm.sh/y-webrtc@10'
 
+const ydoc = new Y.Doc()
+const provider = new WebrtcProvider('lot a nodes', ydoc, { password: 'test' })
+// An array might not be the best, but it's a place to start.
+const ynodes = ydoc.getArray('ynodes');
+
+ynodes.observe(event => {
+  event.changes.added.forEach(item => {
+    item.content.getContent().forEach(ay_node => {
+      console.log(`ay_node is:`);
+      console.log(ay_node);
+    })
+  })
+});
+
 let cy = cytoscape({
   container: document.getElementById('cy'),
   elements: [
@@ -41,7 +55,16 @@ function updateNodeLocation(id) {
     // add id to nodes
     nodes[id] = { position: position, destinations: [] };
   }
-  console.log(nodes);
+  sendToYjs();
+}
+
+function sendToYjs() {
+  let node_array = [];
+  for (const [key, value] of Object.entries(nodes)) {
+      const node_info = {'id:': key, 'position': value.position};
+      node_array.push(node_info);
+  }
+  ynodes.push(node_array);
 }
 
 function addNode(event) {
