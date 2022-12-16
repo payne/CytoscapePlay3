@@ -5,8 +5,8 @@ import { WebrtcProvider } from 'https://esm.sh/y-webrtc@10'
 const colors=['red','green','blue','yellow','orange'];
 const oneOf = arr => arr[Math.floor(Math.random() * arr.length)]
 // An array might not be the best, but it's a place to start.
-const ydoc = new Y.Doc()
-const provider = new WebrtcProvider('lot a nodes', ydoc, { password: 'test' })
+const ydoc = new Y.Doc();
+const provider = new WebrtcProvider('lot a nodes', ydoc, { password: 'test' });
 const ynodes = ydoc.getArray('ynodes');
 
 ynodes.observe(event => {
@@ -63,6 +63,8 @@ function updateNodeLocation(id) {
 
 function sendToYjs() {
   let node_array = [];
+  // There's a global map of nodes seperate from js.cytoscape.org
+  // turn it into a simple array to publish
   for (const [key, value] of Object.entries(nodes)) {
       const node_info = {'id': key, 'position': value.position};
       node_array.push(node_info);
