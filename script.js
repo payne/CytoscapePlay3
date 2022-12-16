@@ -1,30 +1,52 @@
+// https://cdn.jsdelivr.net/npm/yjs@13.0.0-98/dist/yjs.js
+import * as Y from 'https://esm.sh/yjs@13'
+import { WebrtcProvider } from 'https://esm.sh/y-webrtc@10'
+
+const ydoc = new Y.Doc()
+const provider = new WebrtcProvider('lot a nodes', ydoc, { password: 'test' })
+// An array might not be the best, but it's a place to start.
+const ynodes = ydoc.getArray('ynodes');
+
+ynodes.observe(event => {
+  event.changes.added.forEach(item => {
+    item.content.getContent().forEach(ay_node => {
+      console.log(`ay_node is:`);
+      console.log(ay_node);
+    })
+  })
+});
+
 let cy = cytoscape({
   container: document.getElementById('cy'),
   elements: [
     { data: { id: 'a' } },
     { data: { id: 'b' } },
-    { data: { id: 'ab', source: 'a', target: 'b' }
+    {
+      data: { id: 'ab', source: 'a', target: 'b' }
     }]
 });
 window.cy = cy; // so it's easy to play in devtools console
 // https://stackoverflow.com/questions/66516233/change-event-in-cytoscape-js-graph
-cy.on('add dragfree dragfreeon remove move select unselect tapdragover tapselect tapunselect boxselect box lock', generic_event);
-console.log(`setup a bunch of listeners.`);
-let nodes={}; // key is nodeID and value is metadata and list of destination nodeIDs
-let currentNodeId='b';
-let nextNodeId = () => {
-  currentNodeId = String.fromCharCode(currentNodeId[0].charCodeAt()+1);
+// cy.on('add dragfree dragfreeon remove move select unselect tapdragover tapselect tapunselect boxselect box lock', generic_event);
+cy.on('dragfree' , nodeMovedNew);
+let nodes = {}; // key is nodeID and value is metadata and list of destination nodeIDs
+updateNodeLocation('a');
+updateNodeLocation('b');
+nodes['a'].destinations = ['b'];
+let currentNodeId = 'b';
+function nextNodeId() {
+  currentNodeId = String.fromCharCode(currentNodeId[0].charCodeAt() + 1);
   return currentNodeId;
 }
 let addNodeButton = document.getElementById('addNodeButton');
 let addEdgeButton = document.getElementById('addEdgeButton');
-let nodeMoved = (event) => { 
-  console.log(event);
-}
-let nodeMovedNew = (event) => { 
-  console.log(event);
+function nodeMovedNew(event) {
   const id = event.target.id();
-  const position = event.position;
+  updateNodeLocation(id);
+}
+function updateNodeLocation(id) {
+  const node = cy.getElementById(id);
+  const position = node.position();
   // is id in nodes?
   if (nodes[id]) {
     // update position
@@ -33,14 +55,21 @@ let nodeMovedNew = (event) => {
     // add id to nodes
     nodes[id] = { position: position, destinations: [] };
   }
-  console.log(event);
-  console.log(nodes);
-} 
-// I want this to be hoisted
-function  generic_event(ev)  { console.log('hey some event happened on cy: ', ev);};
-let addNode = (event) => {
+  sendToYjs();
+}
+
+function sendToYjs() {
+  let node_array = [];
+  for (const [key, value] of Object.entries(nodes)) {
+      const node_info = {'id:': key, 'position': value.position};
+      node_array.push(node_info);
+  }
+  ynodes.push(node_array);
+}
+
+function addNode(event) {
   let nId = nextNodeId();
-  let n = cy.add( { data: { id: nId }, position: {  x: 100, y: 100 } });
+  let n = cy.add({ data: { id: nId }, position: { x: 100, y: 100 } });
   console.log(`addNodeButton click`);
   console.log(n);
   // n.on('tapdragover', nodeMoved);
