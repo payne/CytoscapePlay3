@@ -14,7 +14,8 @@ ynodes.observe(event => {
       console.log(ay_node);
       const node = cy.getElementById(ay_node.id);
       nodes[ay_node.id].position = ay_node.position;
-      node.position = ay_node.position;
+      node.position(ay_node.position);
+      console.log(`Just set possition of ${ay_node.id} to:`, ay_node.position);
     })
   })
 });
