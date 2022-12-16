@@ -16,6 +16,9 @@ window.cy = cy; // so it's easy to play in devtools console
 // cy.on('add dragfree dragfreeon remove move select unselect tapdragover tapselect tapunselect boxselect box lock', generic_event);
 cy.on('dragfree' , nodeMovedNew);
 let nodes = {}; // key is nodeID and value is metadata and list of destination nodeIDs
+updateNodeLocation('a');
+updateNodeLocation('b');
+nodes['a'].destinations = ['b'];
 let currentNodeId = 'b';
 function nextNodeId() {
   currentNodeId = String.fromCharCode(currentNodeId[0].charCodeAt() + 1);
@@ -25,6 +28,9 @@ let addNodeButton = document.getElementById('addNodeButton');
 let addEdgeButton = document.getElementById('addEdgeButton');
 function nodeMovedNew(event) {
   const id = event.target.id();
+  updateNodeLocation(id);
+}
+function updateNodeLocation(id) {
   const node = cy.getElementById(id);
   const position = node.position();
   // is id in nodes?
