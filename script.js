@@ -23,10 +23,9 @@ let nodeMoved = (event) => {
   console.log(event);
 }
 function nodeMovedNew(event) {
-  console.log(event);
   const id = event.target.id();
-  console.log(`id=${id}`);
-  const position = event.position;
+  const node = cy.getElementById(id);
+  const position = node.position();
   // is id in nodes?
   if (nodes[id]) {
     // update position
