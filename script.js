@@ -12,6 +12,9 @@ ynodes.observe(event => {
     item.content.getContent().forEach(ay_node => {
       console.log(`ay_node is:`);
       console.log(ay_node);
+      const node = cy.getElementById(ay_node.id);
+      nodes[ay_node.id].position = ay_node.position;
+      node.position = ay_node.position;
     })
   })
 });
@@ -61,7 +64,7 @@ function updateNodeLocation(id) {
 function sendToYjs() {
   let node_array = [];
   for (const [key, value] of Object.entries(nodes)) {
-      const node_info = {'id:': key, 'position': value.position};
+      const node_info = {'id': key, 'position': value.position};
       node_array.push(node_info);
   }
   ynodes.push(node_array);
