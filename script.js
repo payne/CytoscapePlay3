@@ -1,3 +1,4 @@
+// this code is messy -- not clean!  not clean!
 // https://cdn.jsdelivr.net/npm/yjs@13.0.0-98/dist/yjs.js
 import * as Y from 'https://esm.sh/yjs@13'
 import { WebrtcProvider } from 'https://esm.sh/y-webrtc@10'
